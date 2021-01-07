@@ -38,8 +38,8 @@ namespace Air_Hockey
         int puckHeight = 15;
         int puckWidth = 15;
         int puckBaseSpeed = 6;
-        int puckXSpeed = 5;
-        int puckYSpeed = 6;
+        int puckXSpeed = 1;
+        int puckYSpeed = 1;
 
         bool wUp = false;
         bool sDown = false;
@@ -232,6 +232,8 @@ namespace Air_Hockey
                 player2Y = 475;
                 puckX = 175;
                 puckY = 300;
+                puckXSpeed = -1;
+                puckYSpeed = -1;
                 cheer.Play();
             }
             else if (puckRec.IntersectsWith(goal2))
@@ -243,6 +245,8 @@ namespace Air_Hockey
                 player2Y = 475;
                 puckX = 175;
                 puckY = 300;
+                puckXSpeed = 1;
+                puckYSpeed = 1;
                 cheer.Play();
             }
             if (player1Score == 3 || player2Score == 3)
