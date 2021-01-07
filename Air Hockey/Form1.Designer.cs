@@ -31,6 +31,7 @@ namespace Air_Hockey
         {
             this.components = new System.ComponentModel.Container();
             this.GameEnigine = new System.Windows.Forms.Timer(this.components);
+            this.soundtime = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // GameEnigine
@@ -38,6 +39,11 @@ namespace Air_Hockey
             this.GameEnigine.Enabled = true;
             this.GameEnigine.Interval = 20;
             this.GameEnigine.Tick += new System.EventHandler(this.GameEnigine_Tick);
+            // 
+            // soundtime
+            // 
+            this.soundtime.Enabled = true;
+            this.soundtime.Interval = 3000;
             // 
             // Form1
             // 
@@ -58,6 +64,7 @@ namespace Air_Hockey
         #endregion
 
         private System.Windows.Forms.Timer GameEnigine;
+        private System.Windows.Forms.Timer soundtime;
     }
 }
 

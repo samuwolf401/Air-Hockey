@@ -11,12 +11,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Media;
 
 namespace Air_Hockey
 {
     public partial class Form1 : Form
     {
-        #region// variables
+        #region// variables and setup
         int player1X = 175;
         int player1Y = 25;
         int player1Score = 0;
@@ -38,6 +39,7 @@ namespace Air_Hockey
         int puckWidth = 15;
         int puckXSpeed = 5;
         int puckYSpeed = 6;
+        int puckSpeed = 6;
 
         bool wUp = false;
         bool sDown = false;
@@ -52,6 +54,12 @@ namespace Air_Hockey
         SolidBrush blackBrush = new SolidBrush(Color.Black);
         Pen redpen = new Pen(Color.Red);
         Font screenFont = new Font("Consolas", 12);
+
+        SoundPlayer puck = new SoundPlayer(Properties.Resources.puckSound);
+        SoundPlayer cheer = new SoundPlayer(Properties.Resources.cheer);
+        SoundPlayer skating = new SoundPlayer(Properties.Resources.ice_skating_daniel_simon);
+
+        Random RandGen = new Random();
         #endregion
 
         public Form1()
@@ -176,6 +184,7 @@ namespace Air_Hockey
             //colision
             if (puckY < 0 || puckY > this.Height - puckHeight)
             {
+                puckSpeed = RandGen.Next(6,9);
                 puckYSpeed *= -1;
             }
             if (puckX < 0 || puckX > this.Width - puckWidth)
@@ -187,11 +196,13 @@ namespace Air_Hockey
             {
                 puckYSpeed *= -1;
                 puckY = player1Y + playerWidth + 1;
+                puck.Play();
             }
             else if (player2Rec.IntersectsWith(puckRec))
             {
                 puckYSpeed *= -1;
                 puckY = player2Y - playerWidth - 1;
+                puck.Play();
             }
             #endregion
 
@@ -205,6 +216,7 @@ namespace Air_Hockey
                 player2Y = 475;
                 puckX = 175;
                 puckY = 300;
+                cheer.Play();
             }
             else if (puckRec.IntersectsWith(goal2))
             {
@@ -215,6 +227,7 @@ namespace Air_Hockey
                 player2Y = 475;
                 puckX = 175;
                 puckY = 300;
+                cheer.Play();
             }
             if (player1Score == 3 || player2Score == 3)
             {
