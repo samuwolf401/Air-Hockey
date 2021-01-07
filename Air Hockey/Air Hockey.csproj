@@ -89,5 +89,8 @@
   <ItemGroup>
     <None Include="Resources\ice-skating-daniel_simon.wav" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Kawsone-Teneo-Touch-Hockey-2.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

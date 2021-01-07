@@ -37,9 +37,9 @@ namespace Air_Hockey
         int puckY = 300;
         int puckHeight = 15;
         int puckWidth = 15;
+        int puckBaseSpeed = 6;
         int puckXSpeed = 5;
         int puckYSpeed = 6;
-        int puckSpeed = 6;
 
         bool wUp = false;
         bool sDown = false;
@@ -49,6 +49,7 @@ namespace Air_Hockey
         bool downArrowDown = false;
         bool rightArrowDown = false;
         bool leftArrowDown = false;
+        bool paused = true;
 
         SolidBrush redBrush = new SolidBrush(Color.Red);
         SolidBrush blackBrush = new SolidBrush(Color.Black);
@@ -57,7 +58,6 @@ namespace Air_Hockey
 
         SoundPlayer puck = new SoundPlayer(Properties.Resources.puckSound);
         SoundPlayer cheer = new SoundPlayer(Properties.Resources.cheer);
-        SoundPlayer skating = new SoundPlayer(Properties.Resources.ice_skating_daniel_simon);
 
         Random RandGen = new Random();
         #endregion
@@ -94,6 +94,19 @@ namespace Air_Hockey
                     break;
                 case Keys.Left:
                     leftArrowDown = true;
+                    break;
+                case Keys.P:
+                    infoLabel.Visible = false;
+                    if (paused)
+                    {
+                        GameEnigine.Enabled = true;
+                        paused = !paused;
+                    }
+                    else
+                    {
+                        GameEnigine.Enabled = false;
+                        paused = !paused;
+                    }
                     break;
             }
         }
@@ -184,23 +197,26 @@ namespace Air_Hockey
             //colision
             if (puckY < 0 || puckY > this.Height - puckHeight)
             {
-                puckSpeed = RandGen.Next(6,9);
                 puckYSpeed *= -1;
+                puckXSpeed = puckXSpeed - RandGen.Next(-2,3);
             }
             if (puckX < 0 || puckX > this.Width - puckWidth)
             {
                 puckXSpeed *= -1;
+                puckYSpeed = puckYSpeed - RandGen.Next(-2, 3);
             }
 
             if (player1Rec.IntersectsWith(puckRec))
             {
-                puckYSpeed *= -1;
+                puckYSpeed = puckBaseSpeed * Math.Sign(puckYSpeed) * -1;
+                puckXSpeed = puckBaseSpeed * Math.Sign(puckXSpeed);
                 puckY = player1Y + playerWidth + 1;
                 puck.Play();
             }
             else if (player2Rec.IntersectsWith(puckRec))
             {
-                puckYSpeed *= -1;
+                puckYSpeed = puckBaseSpeed* Math.Sign(puckYSpeed) * -1;
+                puckXSpeed = puckBaseSpeed * Math.Sign(puckXSpeed);
                 puckY = player2Y - playerWidth - 1;
                 puck.Play();
             }
@@ -232,6 +248,8 @@ namespace Air_Hockey
             if (player1Score == 3 || player2Score == 3)
             {
                 GameEnigine.Enabled = false;
+                infoLabel.Text = "Click here to exit!";
+                infoLabel.Visible = true;
             }
             #endregion
             Refresh();
@@ -239,7 +257,7 @@ namespace Air_Hockey
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            //drawing
+            #region //drawing
             e.Graphics.FillRectangle(redBrush, player1X, player1Y, playerWidth,playerHeight);
             e.Graphics.FillRectangle(redBrush, player2X, player2Y, playerWidth, playerHeight);
 
@@ -250,13 +268,12 @@ namespace Air_Hockey
 
             e.Graphics.DrawString($"{player1Score}", screenFont, blackBrush, 330, 280);
             e.Graphics.DrawString($"{player2Score}", screenFont, blackBrush, 330, 300);
+            #endregion
+        }
 
-
-
-
-
-
-
+        private void infoLabel_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }
